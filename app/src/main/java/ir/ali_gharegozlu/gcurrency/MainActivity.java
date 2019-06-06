@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     List<CurrencyObject> currencyObjectList = new ArrayList<>();
     List<CurrencyObject> coinObjectList = new ArrayList<>();
 
-    String apiKey = "72kiknje48j5uzcpgbl65nun87z5dwau";
+    String apiKey = getString(R.string.apikey);
     RelativeLayout relativeLayout;
 
     String TAG = "g-currency";
