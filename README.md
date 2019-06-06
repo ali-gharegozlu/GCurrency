@@ -8,7 +8,7 @@
 
 Loopj  Android Async Http Client (https://loopj.com/android-async-http/)
 
-ObjectBox (objectbox.io)
+ObjectBox (http://objectbox.io)
 
 
 
