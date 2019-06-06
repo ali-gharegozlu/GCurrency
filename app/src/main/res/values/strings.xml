@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">G Currency</string>
+    <string name="action_settings">تنظیمات</string>
+    <string name="refresh">به روزرسانی</string>
+</resources>
