@@ -37,16 +37,12 @@ public class MainActivity extends AppCompatActivity {
     List<CurrencyObject> currencyObjectList = new ArrayList<>();
     List<CurrencyObject> coinObjectList = new ArrayList<>();
 
-    String apiKey = getString(R.string.apikey);
+    String apiKey;
     RelativeLayout relativeLayout;
-
     String TAG = "g-currency";
-
     TextView lastUpdatedTV;
-
     CurrencyItemAdapter itemAdapter;
     CoinItemAdapter coinItemAdapter;
-
     SimpleDateFormat formatDate;
     SimpleDateFormat formatTime;
     String updatedDate;
@@ -57,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     Box<CurrencyObject> currencyObjectBox;
     SharedPreferences.Editor preferences;
     String PREFS_NAME = "g_currency_prefs";
+    JSONObject mResponse;
+    RecyclerView currencyRecyclerView, coinRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        apiKey = getResources().getString(R.string.apikey);
         relativeLayout = findViewById(R.id.mainRootLayout);
         lastUpdatedTV = findViewById(R.id.lastUpdatedTV);
 
@@ -73,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         currencyObjectBox = boxStore.boxFor(CurrencyObject.class);
 
         preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
-
 
         //try {
         //currencyObjectList.clear();
@@ -95,11 +93,11 @@ public class MainActivity extends AppCompatActivity {
         //}
 
         itemAdapter = new CurrencyItemAdapter(this, currencyObjectList);
-        final RecyclerView currencyRecyclerView = findViewById(R.id.currencyRV);
+         currencyRecyclerView = findViewById(R.id.currencyRV);
         currencyRecyclerView.setAdapter(itemAdapter);
 
         coinItemAdapter = new CoinItemAdapter(this, coinObjectList);
-        final RecyclerView coinRecyclerView = findViewById(R.id.coinsRV);
+        coinRecyclerView = findViewById(R.id.coinsRV);
         coinRecyclerView.setAdapter(coinItemAdapter);
 
         LinearLayoutManager layoutManager
@@ -121,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
+                    mResponse = response;
                     MainActivity.this.onSuccess(response, currencyRecyclerView, coinRecyclerView);
                 }
 
@@ -215,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
         }*/
         if(id==R.id.action_refresh){
 
+            MainActivity.this.onSuccess(mResponse, currencyRecyclerView, coinRecyclerView);
             return true;
         }
 
