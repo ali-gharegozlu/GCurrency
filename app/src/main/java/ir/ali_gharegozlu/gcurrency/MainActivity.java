@@ -81,8 +81,12 @@ public class MainActivity extends AppCompatActivity {
         lastUpdatedTV.setText(prefs.getString("last_updated_key", ""));
         try {
             lastUpdatedDay = prefs.getString("last_updated_key", "").substring(4, 10);
-            if(prefs.contains("last_updated_key"))
+            //lastUpdatedDay works fine
+            if(!prefs.contains("last_updated_key"))
                 isAppFirstLaunch = true;
+            else
+                isAppFirstLaunch = false;
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -91,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
         //} catch (Exception e) {
         //    e.printStackTrace();
         //}
-
         itemAdapter = new CurrencyItemAdapter(this, currencyObjectList);
          currencyRecyclerView = findViewById(R.id.currencyRV);
         currencyRecyclerView.setAdapter(itemAdapter);
@@ -104,8 +107,16 @@ public class MainActivity extends AppCompatActivity {
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         coinRecyclerView.setLayoutManager(layoutManager);
 
+        Toast.makeText(this, lastUpdatedDay +" = "+ setDateTime().substring(4, 10), Toast.LENGTH_SHORT).show();
 
-        if (true/*!lastUpdatedDay.equals(setDateTime().substring(4, 10)) || isAppFirstLaunch*/) {
+        boolean updateOrNot = true;
+        try{
+            updateOrNot = !lastUpdatedDay.equals(setDateTime().substring(4, 10)) || isAppFirstLaunch;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        Toast.makeText(this, "is app first launch: "+isAppFirstLaunch, Toast.LENGTH_SHORT).show();
+        if (true/*updateOrNot*/) {
             AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
             asyncHttpClient.get("http://api.apimaster.ir/" + apiKey + "/nerkh/v1/list", new JsonHttpResponseHandler() {
 
